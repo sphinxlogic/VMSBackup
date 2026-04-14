@@ -1,4 +1,4 @@
-#define __VMSVERSION__ "1.7"
+#define __VMSVERSION__ "1.8"
 
 // VMS Backup Utiliy
 //
