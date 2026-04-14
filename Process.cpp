@@ -378,12 +378,14 @@ void DumpBriefFileHeader (BSFileHeader* pcFileHeader, uint32_t uiSubSecondResolu
     if (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[6]) == 0)
     {
         fprintf (stdout, "                      Size: %7i/%-7i",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 1,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
     else
     {
         fprintf (stdout, "                      Size: %7i/%-7i",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 0,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
@@ -419,12 +421,14 @@ void DumpFullFileHeader (BSFileHeader* pcFileHeader, BRHeader* pcHeader, SBackup
     if (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[6]) == 0)
     {
         fprintf (stdout, "Size: %12i/%-12i",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 1,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
     else
     {
         fprintf (stdout, "Size: %12i/%-12i",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 0,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
@@ -640,12 +644,14 @@ void DumpCSVFileHeader (BSFileHeader* pcFileHeader, BRHeader* pcHeader, SBackupP
     if (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[6]) == 0)
     {
         fprintf (stdout, "%i,%i,",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 1,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
     else
     {
         fprintf (stdout, "%i,%i,",
+        (SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[4]) << 16) +
         SWAPSHORT (((uint16_t*) pcFileHeader->RECATTR ())[5]) - 0,
         SWAPLONG (((uint32_t*) pcFileHeader->FILESIZE ())[0]));
     }
@@ -969,7 +975,9 @@ void ProcessFile (uint8_t* cBuffer, BRHeader* pcHeader, SBackupParameters* psPar
             // Store the File Size Parameters
             psParameters->bLFDetected               = false;
             psParameters->uiFilePointer             = 0;
-            psParameters->uiFileSize                = (SWAPSHORT (((uint16_t*) cFileHeader.RECATTR ())[5]) * 512) - 512 + SWAPSHORT (((uint16_t*) cFileHeader.RECATTR ())[6]);
+            psParameters->uiFileSize                = (((SWAPSHORT (((uint16_t*) cFileHeader.RECATTR ())[4]) << 16) +
+                                                         SWAPSHORT (((uint16_t*) cFileHeader.RECATTR ())[5])) * 512) -
+                                                      512 + SWAPSHORT (((uint16_t*) cFileHeader.RECATTR ())[6]);
             psParameters->cFormat                   = cFileHeader.RECATTR ()[0] & 0x0F;
             psParameters->uiRemainingRecordLength   = 0;
             psParameters->uiRemainingStartPos       = 0;
