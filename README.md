@@ -15,6 +15,8 @@ Effectively the same tool, but a little more portable, a little slower, but with
 
 ***Updates***
 
+1.8 fixes large file extraction, where files using more than 65,535 blocks were truncated.
+
 1.7 is a very tiny bugfix to remove superflous new lines appearing in rare cases in ASCII mode files.  My next goal after this is a code cleanup, to remove alot of the C'isms littered throughout the code.
 
 1.6 is mostly minor changes brought about by comparing with the Python Port.
